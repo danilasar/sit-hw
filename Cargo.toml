@@ -1,0 +1,9 @@
+[package]
+name = "fibonacci"
+version = "1.0.0"
+edition = "2021"
+[[bin]]
+name = "fib"
+path = "fib.rs"
+
+[dependencies]
