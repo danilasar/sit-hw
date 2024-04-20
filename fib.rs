@@ -5,11 +5,14 @@ fn fib(n: u8, dp:&mut [u128; 184]) -> Result<u128, String> {
     if n == 0 {
         return Err(String::from("Ноль не является номером"));
     }
+    if n == 1 {
+        return Ok(0);
+    }
+    if n == 2 {
+        return Ok(1);
+    }
     if n > 186 {
         return Err(String::from("Программа способна вычислить только первые 186 чисел ряда"));
-    }
-    if n == 1 || n == 2 {
-        return Ok(1);
     }
     let index:usize = usize::from(n - 3); // получаем индекс в массиве
     if dp[index] == 0 { // если число под этим номером ещё не вычислено, вычисляем
