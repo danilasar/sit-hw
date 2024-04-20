@@ -1,29 +1,27 @@
 use std::io;
 
-// n - номер числа Фибоначчи, dp - массив с числами Фибоначчи (для ещё не вычисленных используется 0)
-fn fib(n: u8, dp:&mut [u128; 184]) -> Result<u128, String> {
+// n - номер числа Фибоначчи
+fn fib(n: u8) -> Result<(), String> {
+    let dp:&mut [u128; 187] = &mut [0u128;187];
     if n == 0 {
         return Err(String::from("Ноль не является номером"));
     }
-    if n == 1 {
-        return Ok(0);
+    if n > 187 {
+        return Err(String::from("Программа способна вычислить только первые 187 чисел ряда"));
     }
-    if n == 2 {
-        return Ok(1);
+    dp[0] = 0;
+    println!("{}", dp[0]);
+    dp[1] = 1;
+    if n >= 2 {
+        println!("{}", dp[1]);
     }
-    if n > 186 {
-        return Err(String::from("Программа способна вычислить только первые 186 чисел ряда"));
+    let mut i:usize = 2usize;
+    while i < usize::from(n) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+        println!("{}", dp[i]);
+        i += 1;
     }
-    let index:usize = usize::from(n - 3); // получаем индекс в массиве
-    if dp[index] == 0 { // если число под этим номером ещё не вычислено, вычисляем
-        dp[index] = fib(n - 1, dp).unwrap() + fib(n - 2, dp).unwrap();
-    }
-    return Ok(dp[index]);
-}
-
-// Макрос, создающий массив для динамики
-macro_rules! fib {
-    ($n:expr) => {fib($n, &mut [0u128;184])};
+    return Ok(());
 }
 
 fn main() {
@@ -35,10 +33,9 @@ fn main() {
     let trimmed = input.trim(); // избавляемся от пробелов и прочей лабуды
     match trimmed.parse::<u8>() {
         Ok(n) => {
-            match fib!(n) {
-                Ok(i) => println!("{n}-е число Фибоначчи: {i}"),
-                Err(err) => println!("{err}")
-            }
+            fib(n).unwrap_or_else(|error| {
+                println!("{error}");
+            });
         },
         Err(..) => println!("Это не число: {}", trimmed)
     };
